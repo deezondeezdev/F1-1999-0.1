@@ -82,7 +82,8 @@ def handle_collision(player_car, computer_car, game_info):
     computer_finish_poi_collide = computer_car.collide(
         FINISH_MASK, *FINISH_POSITION)
     if computer_finish_poi_collide != None:
-        time.sleep(5000)
+        computer_car.reset()
+        computer_car.move()
         if game_info.next_level() == 10:
             blit_text_center(WIN, MAIN_FONT, "You lost!")
             pygame.display.update()

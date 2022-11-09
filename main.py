@@ -26,10 +26,12 @@ PATH = [(175, 119), (110, 70), (56, 133), (70, 481), (318, 731), (404, 680), (41
 def mute(mute):
     print("test")
     if mute == False:
-        pygame.mixer.music.pause
+        pygame.mixer.set_volume(0.1)
+        pygame.mixer.get_volume()
         mute = True
     elif mute == True:
-        pygame.mixer.music.unpause
+        pygame.mixer.set_volume(1)
+        pygame.mixer.get_volume()
         mute = False
 class GameInfo:
     LEVELS = 10

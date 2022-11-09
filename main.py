@@ -9,6 +9,7 @@ x,y = 0,0
 GRASS = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5)
 TRACK = scale_image(pygame.image.load("imgs/track.png"), 0.9)
 LAPS = 10
+complevel = 0
 TRACK_BORDER = scale_image(pygame.image.load("imgs/track-border.png"), 0.9)
 TRACK_BORDER_MASK = pygame.mask.from_surface(TRACK_BORDER)
 FINISH = pygame.image.load("imgs/finish.png")
@@ -84,7 +85,6 @@ def handle_collision(player_car, computer_car, game_info):
     if computer_finish_poi_collide != None:
         computer_car.reset()
         computer_car.move()
-        computer_car.move()
         if game_info.next_level() == 10:
             blit_text_center(WIN, MAIN_FONT, "You lost!")
             pygame.display.update()
@@ -131,7 +131,6 @@ while run:
         neutral()
     if round(player_car.vel*25, 1) >= 85:
         maxer()
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False

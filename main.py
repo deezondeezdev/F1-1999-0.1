@@ -9,6 +9,7 @@ x,y = 0,0
 GRASS = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5)
 TRACK = scale_image(pygame.image.load("imgs/track.png"), 0.9)
 LAPS = 10
+mute = True
 complevel = 0
 TRACK_BORDER = scale_image(pygame.image.load("imgs/track-border.png"), 0.9)
 TRACK_BORDER_MASK = pygame.mask.from_surface(TRACK_BORDER)
@@ -22,6 +23,14 @@ MAIN_FONT = pygame.font.SysFont("Arial", 30)
 FPS = 60
 PATH = [(175, 119), (110, 70), (56, 133), (70, 481), (318, 731), (404, 680), (418, 521), (507, 475), (600, 551), (613, 715), (736, 713),
         (734, 399), (611, 357), (409, 343), (433, 257), (697, 258), (738, 123), (581, 71), (303, 78), (275, 377), (176, 388), (178, 260)]
+def mute(mute):
+    print("test")
+    if mute == False:
+        pygame.mixer.music.pause
+        mute = True
+    elif mute == True:
+        pygame.mixer.music.unpause
+        mute = False
 class GameInfo:
     LEVELS = 10
     def __init__(self, level=1):
@@ -67,6 +76,9 @@ def move_player(player_car):
     moved = False
     if keys[pygame.K_a]:
         player_car.rotate(left=True)
+    if keys[pygame.K_m]:
+        mute(mute)
+        time.sleep(0.1)
     if keys[pygame.K_d]:
         player_car.rotate(right=True)
     if keys[pygame.K_w]:

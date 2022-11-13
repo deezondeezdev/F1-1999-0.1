@@ -9,7 +9,6 @@ GRASS = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5)
 TRACK = scale_image(pygame.image.load("imgs/track.png"), 0.9)
 LAPS = 10
 mute = True
-complevel = 0
 TRACK_BORDER = scale_image(pygame.image.load("imgs/track-border.png"), 0.9)
 TRACK_BORDER_MASK = pygame.mask.from_surface(TRACK_BORDER)
 FINISH = pygame.image.load("imgs/finish.png")
@@ -41,7 +40,6 @@ class GameInfo:
     def level(self):
         print(self.level)
     def reset(self):
-        
         self.level = 1
         self.started = False
         self.level_start_time = 0
@@ -75,9 +73,6 @@ def move_player(player_car):
     moved = False
     if keys[pygame.K_a]:
         player_car.rotate(left=True)
-    if keys[pygame.K_m]:
-        mute(mute)
-        time.sleep(0.1)
     if keys[pygame.K_d]:
         player_car.rotate(right=True)
     if keys[pygame.K_w]:

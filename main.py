@@ -10,13 +10,7 @@ ddd = 0
 GRASS = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5)
 TRACK = scale_image(pygame.image.load("imgs/track.png"), 0.9)
 LAPS = 10
-mute = False
-neutral_sound = pygame.mixer.Sound("f1neutral.mp3")
-max_sound = pygame.mixer.Sound("f1max.mp3")
-def neutral():
-    pygame.mixer.Sound.play(neutral_sound)
-def maxer():
-    pygame.mixer.Sound.play(max_sound)
+mute = True
 complevel = 0
 TRACK_BORDER = scale_image(pygame.image.load("imgs/track-border.png"), 0.9)
 TRACK_BORDER_MASK = pygame.mask.from_surface(TRACK_BORDER)
@@ -30,16 +24,14 @@ MAIN_FONT = pygame.font.SysFont("Arial", 30)
 FPS = 60
 PATH = [(175, 119), (110, 70), (56, 133), (70, 481), (318, 731), (404, 680), (418, 521), (507, 475), (600, 551), (613, 715), (736, 713),
         (734, 399), (611, 357), (409, 343), (433, 257), (697, 258), (738, 123), (581, 71), (303, 78), (275, 377), (176, 388), (178, 260)]
-def mute():
-    if ddd == 1:
-        if mute == False:
-            if round(player_car.vel*25, 1) == 0:
-                neutral()
-            if round(player_car.vel*25, 1) >= 85:
-                maxer()
-    else:
-        if mute == True:
-            print("cock")
+def mute(mute):
+    print("test")
+    if mute == False:
+        pygame.mixer.music.pause()
+        mute = True
+    elif mute == True:
+        pygame.mixer.music.unpause()
+        mute = False()
 class GameInfo:
     LEVELS = 10
     def __init__(self, level=1):
@@ -86,8 +78,7 @@ def move_player(player_car):
     if keys[pygame.K_a]:
         player_car.rotate(left=True)
     if keys[pygame.K_m]:
-        ddd = 1
-        mute()
+        mute(mute)
         time.sleep(0.1)
     if keys[pygame.K_d]:
         player_car.rotate(right=True)
@@ -123,7 +114,12 @@ def handle_collision(player_car, computer_car, game_info):
             player_car.reset()
             computer_car.next_level(game_info.level)
 
-
+neutral_sound = pygame.mixer.Sound("f1neutral.mp3")
+max_sound = pygame.mixer.Sound("f1max.mp3")
+def neutral():
+    pygame.mixer.Sound.play(neutral_sound)
+def maxer():
+    pygame.mixer.Sound.play(max_sound)
 run = True
 clock = pygame.time.Clock()
 images = [(GRASS, (0, 0)), (TRACK, (0, 0)),
@@ -144,7 +140,10 @@ while run:
                 break
             if event.type == pygame.KEYDOWN:
                 game_info.start_level()
-
+    if round(player_car.vel*25, 1) == 0:
+        neutral()
+    if round(player_car.vel*25, 1) >= 85:
+        maxer()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False

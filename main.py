@@ -5,6 +5,7 @@ from drivers import AbstractCar, PlayerCar, ComputerCar
 from utils import scale_image, blit_rotate_center, blit_text_center
 pygame.font.init()
 pygame.init()
+pygame.mixer.init()
 GRASS = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5)
 TRACK = scale_image(pygame.image.load("imgs/track.png"), 0.9)
 LAPS = 10
@@ -22,15 +23,16 @@ FPS = 60
 PATH = [(175, 119), (110, 70), (56, 133), (70, 481), (318, 731), (404, 680), (418, 521), (507, 475), (600, 551), (613, 715), (736, 713),
         (734, 399), (611, 357), (409, 343), (433, 257), (697, 258), (738, 123), (581, 71), (303, 78), (275, 377), (176, 388), (178, 260)]
 def mute(mute):
-    print("test")
     if mute == False:
         pygame.mixer.music.pause()
         mute = True
     elif mute == True:
         pygame.mixer.music.unpause()
-        mute = False()
+        mute = False
 class GameInfo:
-    LEVELS = 10
+
+    LEVELS = 1
+
     def __init__(self, level=1):
         self.level = level
         self.started = False
@@ -109,6 +111,7 @@ def handle_collision(player_car, computer_car, game_info):
 
 neutral_sound = pygame.mixer.Sound("f1neutral.mp3")
 max_sound = pygame.mixer.Sound("f1max.mp3")
+
 def neutral():
     pygame.mixer.Sound.play(neutral_sound)
 def maxer():
@@ -144,10 +147,12 @@ while run:
     move_player(player_car)
     computer_car.move()
     handle_collision(player_car, computer_car, game_info)
+
     if game_info.game_finished():
         blit_text_center(WIN, MAIN_FONT, "You won the game!")
-        pygame.time.wait(5000)
-        game_info.reset()
-        player_car.reset()
-        computer_car.reset()
+        banana = pygame.mixer.Sound("victory.mp3")
+        pygame.mixer.Sound.play(banana)
+        time.sleep(25)
+        pygame.display.flip()
+
 pygame.quit()

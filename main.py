@@ -20,7 +20,7 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("F1 1999")
 MAIN_FONT = pygame.font.SysFont("formula1", 30)
 FPS = 60
-PATH = [(175, 119), (110, 70), (56, 133), (70, 481), (318, 731), (404, 680), (418, 521), (507, 475), (600, 551), (613, 715), (736, 713),
+PATH = [(176, 119), (110, 70), (56, 133), (70, 481), (318, 731), (404, 680), (418, 521), (507, 475), (600, 551), (613, 715), (736, 713),
         (734, 399), (611, 357), (409, 343), (433, 257), (697, 258), (738, 123), (581, 71), (303, 78), (275, 377), (176, 388), (178, 260)]
 def mute(mute):
     if mute == False:
@@ -31,7 +31,7 @@ def mute(mute):
         mute = False
 class GameInfo:
 
-    LEVELS = 1
+    LEVELS = 3
 
     def __init__(self, level=1):
         self.level = level
@@ -41,6 +41,9 @@ class GameInfo:
         self.level += 1
     def level(self):
         print(self.level)
+    def fetchlevel(self):
+        global banana
+        banana = self.level
     def reset(self):
         self.level = 1
         self.started = False
@@ -91,9 +94,16 @@ def handle_collision(player_car, computer_car, game_info):
     computer_finish_poi_collide = computer_car.collide(
         FINISH_MASK, *FINISH_POSITION)
     if computer_finish_poi_collide != None:
+        game_info.fetchlevel()
         computer_car.reset()
         computer_car.move()
-        if game_info.next_level() == 10:
+        computer_car.move()
+        computer_car.move()
+        computer_car.move()
+        computer_car.move()
+        computer_car.move()
+        computer_car.move()
+        if banana == 10:
             blit_text_center(WIN, MAIN_FONT, "You lost!")
             pygame.display.update()
             game_info.reset()
@@ -105,9 +115,13 @@ def handle_collision(player_car, computer_car, game_info):
         if player_finish_poi_collide[1] == 0:
             player_car.bounce()
         else:
+            
             game_info.next_level()
             player_car.reset()
-            computer_car.next_level(game_info.level)
+            if player_finish_poi_collide != None and computer_finish_poi_collide == None:
+                print("Cock the ai is slow")
+            else:
+                computer_car.next_level(game_info.level)
 
 neutral_sound = pygame.mixer.Sound("f1neutral.mp3")
 max_sound = pygame.mixer.Sound("f1max.mp3")
@@ -152,7 +166,7 @@ while run:
         blit_text_center(WIN, MAIN_FONT, "You won the game!")
         banana = pygame.mixer.Sound("victory.mp3")
         pygame.mixer.Sound.play(banana)
-        time.sleep(25)
+        time.sleep(30)
         pygame.display.flip()
 
 pygame.quit()

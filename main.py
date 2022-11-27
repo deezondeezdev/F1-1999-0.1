@@ -31,7 +31,7 @@ def mute(mute):
         mute = False
 class GameInfo:
 
-    LEVELS = 3
+    LEVELS = 10
 
     def __init__(self, level=1):
         self.level = level
@@ -94,12 +94,10 @@ def handle_collision(player_car, computer_car, game_info):
     computer_finish_poi_collide = computer_car.collide(
         FINISH_MASK, *FINISH_POSITION)
     if computer_finish_poi_collide != None:
-        game_info.fetchlevel()
         computer_car.reset()
         computer_car.move()
-        computer_car.move()
-        computer_car.move()
-        computer_car.move()
+        game_info.fetchlevel()
+        computer_car.reset()
         computer_car.move()
         computer_car.move()
         computer_car.move()
@@ -122,6 +120,8 @@ def handle_collision(player_car, computer_car, game_info):
                 print("Cock the ai is slow")
             else:
                 computer_car.next_level(game_info.level)
+                computer_car.move()
+
 
 neutral_sound = pygame.mixer.Sound("f1neutral.mp3")
 max_sound = pygame.mixer.Sound("f1max.mp3")

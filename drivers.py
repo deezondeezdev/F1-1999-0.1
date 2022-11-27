@@ -38,10 +38,7 @@ class AbstractCar:
         offset = (int(self.x - x), int(self.y - y))
         poi = mask.overlap(car_mask, offset)
         return poi
-    def reset(self):
-        self.x, self.y = self.START_POS
-        self.angle = 0
-        self.vel = 0
+    
 class PlayerCar(AbstractCar):
     IMG = RED_CAR
     START_POS = (180, 200)
@@ -51,6 +48,10 @@ class PlayerCar(AbstractCar):
     def bounce(self):
         self.vel = -self.vel
         self.move()
+    def reset(self):
+        self.x, self.y = self.START_POS
+        self.angle = 0
+        self.vel = 0
 class ComputerCar(AbstractCar):
     IMG = GREEN_CAR
     START_POS = (150, 200)
@@ -88,9 +89,12 @@ class ComputerCar(AbstractCar):
             self.x, self.y, self.img.get_width(), self.img.get_height())
         if rect.collidepoint(*target):
             self.current_point += 1
+        if target == 22:
+            target = 1
+        if self.current_point == 22:
+            self.current_point = 1
     def move(self):
-        if self.current_point >= len(self.path):
-            return
+        
         self.calculate_angle()
         self.update_path_point()
         super().move()
@@ -100,3 +104,10 @@ class ComputerCar(AbstractCar):
     def next_level(self, level):
         self.vel = self.max_vel + (level - 1) * 0.3
         self.current_point = 0
+    def reset(self):
+        self.x, self.y = self.START_POS
+        self.angle = 0
+        self.current_point = 0
+        self.target = 0
+        super().move()
+        

@@ -9,6 +9,7 @@ pygame.mixer.init()
 GRASS = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5)
 TRACK = scale_image(pygame.image.load("imgs/track.png"), 0.9)
 LAPS = 10
+lapper = 1
 mute = True
 TRACK_BORDER = scale_image(pygame.image.load("imgs/track-border.png"), 0.9)
 TRACK_BORDER_MASK = pygame.mask.from_surface(TRACK_BORDER)
@@ -31,7 +32,7 @@ def mute(mute):
         mute = False
 class GameInfo:
 
-    LEVELS = 10
+    LEVELS = 3
 
     def __init__(self, level=1):
         self.level = level
@@ -97,13 +98,10 @@ def handle_collision(player_car, computer_car, game_info):
         computer_car.reset()
         computer_car.move()
         game_info.fetchlevel()
-        computer_car.reset()
-        computer_car.move()
-        computer_car.move()
-        computer_car.move()
-        if banana == 10:
+        if banana == getattr(game_info,'LEVELS'):
             blit_text_center(WIN, MAIN_FONT, "You lost!")
             pygame.display.update()
+            time.sleep(20)
             game_info.reset()
             player_car.reset()
             computer_car.reset()
@@ -113,9 +111,19 @@ def handle_collision(player_car, computer_car, game_info):
         if player_finish_poi_collide[1] == 0:
             player_car.bounce()
         else:
-            
+            lapper +=1
             game_info.next_level()
             player_car.reset()
+            if lapper == getattr(game_info,'LEVELS'):
+                blit_text_center(WIN, MAIN_FONT, "You won the game!")
+                quadarno = pygame.mixer.Sound("victory.mp3")
+                pygame.mixer.Sound.play(quadarno)
+                pygame.display.flip()
+                time.sleep(30)
+                game_info.reset()
+                player_car.reset()
+                computer_car.reset()
+
             if player_finish_poi_collide != None and computer_finish_poi_collide == None:
                 print("Cock the ai is slow")
             else:
@@ -135,7 +143,7 @@ clock = pygame.time.Clock()
 images = [(GRASS, (0, 0)), (TRACK, (0, 0)),
           (FINISH, FINISH_POSITION), (TRACK_BORDER, (0, 0))]
 player_car = PlayerCar(4, 4)
-computer_car = ComputerCar(2, 4, PATH)
+computer_car = ComputerCar(4, 4, PATH)
 game_info = GameInfo()
 while run:
     clock.tick(FPS)
@@ -161,12 +169,4 @@ while run:
     move_player(player_car)
     computer_car.move()
     handle_collision(player_car, computer_car, game_info)
-
-    if game_info.game_finished():
-        blit_text_center(WIN, MAIN_FONT, "You won the game!")
-        banana = pygame.mixer.Sound("victory.mp3")
-        pygame.mixer.Sound.play(banana)
-        time.sleep(30)
-        pygame.display.flip()
-
 pygame.quit()

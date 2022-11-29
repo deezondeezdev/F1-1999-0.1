@@ -7,9 +7,12 @@ Why you still reading this???
 Feature List:
     Race Car
     Lap System
+    Proper 2nd Driver
+    Tyre Wear
+
 
 Future Feature:
-    Proper 2nd Driver
     Selectable Car
-    Better Handling
-    Penalty system instead of a wall bounce
+    Pause Function
+    Menu Area
+    

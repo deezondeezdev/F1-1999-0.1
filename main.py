@@ -1,5 +1,7 @@
 from contextlib import nullcontext
 import pygame
+import pygame as pygame
+from tkinter import*
 import time
 from drivers import AbstractCar, PlayerCar, ComputerCar
 from utils import scale_image, blit_rotate_center, blit_text_center
@@ -11,6 +13,7 @@ TRACK = scale_image(pygame.image.load("imgs/track.png"), 0.9)
 LAPS = 10
 lapper = 1
 mute = True
+pause = False
 TRACK_BORDER = scale_image(pygame.image.load("imgs/track-border.png"), 0.9)
 TRACK_BORDER_MASK = pygame.mask.from_surface(TRACK_BORDER)
 FINISH = pygame.image.load("imgs/finish.png")
@@ -33,6 +36,7 @@ def mute(mute):
 class GameInfo:
 
     LEVELS = 3
+    
 
     def __init__(self, level=1):
         self.level = level
@@ -89,6 +93,8 @@ def move_player(player_car):
         player_car.move_backward()
     if not moved:
         player_car.reduce_speed()
+    if keys[pygame.K_ESCAPE]:
+        print("Cock")
 def handle_collision(player_car, computer_car, game_info):
     if player_car.collide(TRACK_BORDER_MASK) != None:
         player_car.bounce()
@@ -111,7 +117,6 @@ def handle_collision(player_car, computer_car, game_info):
         if player_finish_poi_collide[1] == 0:
             player_car.bounce()
         else:
-            lapper +=1
             game_info.next_level()
             player_car.reset()
             if lapper == getattr(game_info,'LEVELS'):

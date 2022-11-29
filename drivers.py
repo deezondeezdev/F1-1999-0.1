@@ -49,7 +49,7 @@ class PlayerCar(AbstractCar):
         self.vel = -self.vel
         self.move()
     def tyrewear(self):
-        self.vel = self.max_vel / 1.01
+        self.vel = self.max_vel * 0.99
     def reset(self):
         self.x, self.y = self.START_POS
         self.angle = 0
@@ -104,7 +104,7 @@ class ComputerCar(AbstractCar):
         self.vel = -self.vel
         self.move()
     def next_level(self, level):
-        self.vel = self.max_vel + (level - 1) / 1.05
+        self.vel = self.max_vel + (level - 1) * 0.9
         self.current_point = 0
     def reset(self):
         self.x, self.y = self.START_POS

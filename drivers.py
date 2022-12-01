@@ -48,12 +48,11 @@ class PlayerCar(AbstractCar):
     def bounce(self):
         self.vel = -self.vel
         self.move()
-    def tyrewear(self):
-        self.vel = self.max_vel * 0.99
     def reset(self):
         self.x, self.y = self.START_POS
         self.angle = 0
-        self.vel = 0
+        self.max_vel = self.max_vel * 0.99
+        self.vel = self.vel
 class ComputerCar(AbstractCar):
     IMG = GREEN_CAR
     START_POS = (150, 200)
@@ -104,12 +103,11 @@ class ComputerCar(AbstractCar):
         self.vel = -self.vel
         self.move()
     def next_level(self, level):
-        self.vel = self.max_vel + (level - 1) * 0.9
+        self.vel = self.max_vel + (level - 1) *0.8
         self.current_point = 0
     def reset(self):
         self.x, self.y = self.START_POS
         self.angle = 0
         self.current_point = 0
         self.target = 0
-        super().move()
-        
+        super().move() 

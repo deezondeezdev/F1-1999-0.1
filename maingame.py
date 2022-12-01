@@ -10,8 +10,6 @@ pygame.init()
 pygame.mixer.init()
 GRASS = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5)
 TRACK = scale_image(pygame.image.load("imgs/track.png"), 0.9)
-LAPS = 10
-lapper = 1
 mute = True
 pause = False
 TRACK_BORDER = scale_image(pygame.image.load("imgs/track-border.png"), 0.9)
@@ -36,19 +34,20 @@ def mute(mute):
 class GameInfo:
 
     LEVELS = 3
-    
-
+    playerlaptracker = 1
+    AILaptracker = 1
     def __init__(self, level=1):
         self.level = level
         self.started = False
         self.level_start_time = 0
     def next_level(self):
         self.level += 1
+    def next_level_player(self):
+        self.playerlaptracker +=1
     def level(self):
         print(self.level)
-    def fetchlevel(self):
-        global banana
-        banana = self.level
+    def next_level_ai(self):
+        self.AILaptracker += 1
     def reset(self):
         self.level = 1
         self.started = False
@@ -91,10 +90,10 @@ def move_player(player_car):
     if keys[pygame.K_s]:
         moved = True
         player_car.move_backward()
-    if not moved:
-        player_car.reduce_speed()
     if keys[pygame.K_ESCAPE]:
         print("Cock")
+    if not moved:
+        player_car.reduce_speed()
 def handle_collision(player_car, computer_car, game_info):
     if player_car.collide(TRACK_BORDER_MASK) != None:
         player_car.bounce()
@@ -102,12 +101,12 @@ def handle_collision(player_car, computer_car, game_info):
         FINISH_MASK, *FINISH_POSITION)
     if computer_finish_poi_collide != None:
         computer_car.reset()
+        game_info.next_level_ai()
         computer_car.move()
-        game_info.fetchlevel()
-        if banana == getattr(game_info,'LEVELS'):
+        if getattr(game_info,'AILaptracker') > getattr(game_info,'LEVELS'):
             blit_text_center(WIN, MAIN_FONT, "You lost!")
             pygame.display.update()
-            time.sleep(20)
+            pygame.time.wait(20000)
             game_info.reset()
             player_car.reset()
             computer_car.reset()
@@ -118,13 +117,14 @@ def handle_collision(player_car, computer_car, game_info):
             player_car.bounce()
         else:
             game_info.next_level()
+            game_info.next_level_player()
             player_car.reset()
-            if lapper == getattr(game_info,'LEVELS'):
+            if getattr(game_info,'playerlaptracker') > getattr(game_info,'LEVELS'):
                 blit_text_center(WIN, MAIN_FONT, "You won the game!")
                 quadarno = pygame.mixer.Sound("victory.mp3")
                 pygame.mixer.Sound.play(quadarno)
                 pygame.display.flip()
-                time.sleep(30)
+                pygame.time.wait(20000)
                 game_info.reset()
                 player_car.reset()
                 computer_car.reset()
@@ -155,12 +155,11 @@ while run:
     draw(WIN, images, player_car, computer_car, game_info)
     while not game_info.started:
         blit_text_center(
-            WIN, MAIN_FONT, f"Press any key to start the Grand Prix!")
+            WIN, MAIN_FONT, f"Press a key to start the Grand Prix!")
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                break
             if event.type == pygame.KEYDOWN:
                 game_info.start_level()
     if round(player_car.vel*25, 1) == 0:
@@ -175,3 +174,4 @@ while run:
     computer_car.move()
     handle_collision(player_car, computer_car, game_info)
 pygame.quit()
+

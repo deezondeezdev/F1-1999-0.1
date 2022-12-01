@@ -33,7 +33,7 @@ def mute(mute):
         mute = False
 class GameInfo:
 
-    LEVELS = 3
+    LEVELS = 1
     playerlaptracker = 1
     AILaptracker = 1
     def __init__(self, level=1):
@@ -106,7 +106,7 @@ def handle_collision(player_car, computer_car, game_info):
         if getattr(game_info,'AILaptracker') > getattr(game_info,'LEVELS'):
             blit_text_center(WIN, MAIN_FONT, "You lost!")
             pygame.display.update()
-            pygame.time.wait(20000)
+            pygame.time.wait(4000)
             game_info.reset()
             player_car.reset()
             computer_car.reset()
@@ -121,10 +121,11 @@ def handle_collision(player_car, computer_car, game_info):
             player_car.reset()
             if getattr(game_info,'playerlaptracker') > getattr(game_info,'LEVELS'):
                 blit_text_center(WIN, MAIN_FONT, "You won the game!")
-                quadarno = pygame.mixer.Sound("victory.mp3")
-                pygame.mixer.Sound.play(quadarno)
-                pygame.display.flip()
-                pygame.time.wait(20000)
+                pygame.mixer.stop()
+                pygame.mixer.music.load("victory.mp3")
+                pygame.mixer.music.play()
+                pygame.display.update()
+                pygame.time.wait(26000)
                 game_info.reset()
                 player_car.reset()
                 computer_car.reset()

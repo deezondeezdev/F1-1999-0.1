@@ -1,5 +1,9 @@
 from tkinter import *
+import pygame
+pygame.mixer.init()
+from maingame import game
 f = open("car.txt", "w")
+l = open("laps.txt", "w")
 window = Tk()
 window.geometry("1600x800+50+100")
 bg = PhotoImage(file = "bg.png")
@@ -30,13 +34,14 @@ bg2 = PhotoImage(file= "bg2.png")
 def leftchanger():
     if room == 1:
         driverroom2()
-        driverroom2()
-    if room == 2:
+    elif room == 2:
         driverroom3()
-    if room == 3:
+    elif room == 3:
         driverroom4()
-    if room == 4:
+    elif room == 4:
         driverroom5()
+    elif room == 5:
+        print("bruha")
 def rightchanger():
 
     if room == 1:
@@ -47,10 +52,10 @@ def rightchanger():
         driverroom2()
     if room == 4:
         driverroom3()
-    if room == 5:
+    if room == 6:
         driverroom4()
 def ferrari():
-    f.write("red")
+    f.write("ferrari")
     f.close()
     laproom()
 def williams():
@@ -89,6 +94,21 @@ def redbull():
     f.write("redbull")
     f.close()
     laproom()
+def lap3():
+    l.write("3")
+    l.close()
+    window.iconify()
+    game()
+def lap5():
+    l.write("5")
+    l.close()
+    window.iconify()
+    game()
+def lap10():
+    l.write("10")
+    l.close()
+    window.iconify()
+    game()
 def laproom():
     buttonlando.place_forget()
     buttondaniel.place_forget()
@@ -118,9 +138,9 @@ def laproom():
 arrowleft = PhotoImage(file="imgs/arrowleft.png")
 arrowright = PhotoImage(file="imgs/arrowright.png")
 label2 = Label(window, image= bg2)
-button3laps = Button(window,image=three_lap)
-button5laps = Button(window,image=five_lap)
-button10laps = Button(window,image=ten_lap)
+button3laps = Button(window,image=three_lap,command=lap3)
+button5laps = Button(window,image=five_lap,command=lap5)
+button10laps = Button(window,image=ten_lap,command= lap10)
 buttonalbon = Button(window,image= albon,command= williams)
 buttonlatifi = Button(window,image= latifi,command= williams)
 buttonmag = Button(window,image= kmag,command= haas)
@@ -204,7 +224,7 @@ def driverroom4():
     buttonmag.place(x= 1200,y=200)
 def driverroom5():
     global room
-    room=5
+    room=6
     buttonseb.place_forget()
     buttonstroll.place_forget()
     buttonmick.place_forget()
@@ -216,7 +236,8 @@ def driverroom5():
 
 
 
-
+pygame.mixer.music.load("theme.mp3")
+pygame.mixer.music.play(50)
 playbutton = PhotoImage(file= "imgs/playbutton.png")
 settings = PhotoImage(file= "imgs/Settings.png")
 label1 = Label(window, image = bg)

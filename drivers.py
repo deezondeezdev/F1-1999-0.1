@@ -1,8 +1,52 @@
 import pygame
 from utils import scale_image, blit_rotate_center, blit_text_center
 import math
-RED_CAR = scale_image(pygame.image.load("imgs/redcar.png"), 0.55)
-GREEN_CAR = scale_image(pygame.image.load("imgs/greencar.png"), 0.55)
+import random
+f = open("car.txt", "r")
+carselect = f.readline()
+if carselect == 'ferrari':
+    driverid = "imgs/ferrari.png"
+elif carselect == "redbull":
+    driverid = 'imgs/rb18.png'
+elif carselect == "williams":
+    driverid = 'imgs/williams.png'
+elif carselect == "alfaromeo":
+    driverid = 'imgs/alfa.png'
+elif carselect == "alphatauri":
+    driverid = 'imgs/alphatauri.png'
+elif carselect == "mclaren":
+    driverid = 'imgs/MCL36.png'
+elif carselect == "mercedes":
+    driverid = 'imgs/merc.png'
+elif carselect == "alpine":
+    driverid = 'imgs/Alpine.png'
+elif carselect == "aston":
+    driverid = 'imgs/aston.png'
+elif carselect == "haas":
+    driverid = 'imgs/haas.png'
+number = random.randint(1,10)
+if number == 1:
+    driverid2 = "imgs/ferrari.png"
+elif number == 2:
+    driverid2 = 'imgs/rb18.png'
+elif number == 3:
+    driverid2 = 'imgs/williams.png'
+elif number == 4:
+    driverid2 = 'imgs/alfa.png'
+elif number == 5:
+    driverid2 = 'imgs/alphatauri.png'
+elif number == 6:
+    driverid2 = 'imgs/MCL36.png'
+elif number == 7:
+    driverid2 = 'imgs/merc.png'
+elif number == 8:
+    driverid2 = 'imgs/Alpine.png'
+elif number == 9:
+    driverid2 = 'imgs/aston.png'
+elif number == 10:
+    driverid2 = 'imgs/haas.png'
+RED_CAR = scale_image(pygame.image.load(driverid), 0.55)
+GREEN_CAR = scale_image(pygame.image.load(driverid2), 0.55)
 class AbstractCar:
     def __init__(self, max_vel, rotation_vel):
         self.img = self.IMG
@@ -38,6 +82,8 @@ class AbstractCar:
         offset = (int(self.x - x), int(self.y - y))
         poi = mask.overlap(car_mask, offset)
         return poi
+    def reduction(self):
+        self.vel = self.vel-0.4
     
 class PlayerCar(AbstractCar):
     IMG = RED_CAR
@@ -53,6 +99,10 @@ class PlayerCar(AbstractCar):
         self.angle = 0
         self.max_vel = self.max_vel * 0.99
         self.vel = self.vel
+    def system_reset(self):
+        self.x, self.y = self.START_POS
+        self.angle = 0
+        self.max_vel = 4
 class ComputerCar(AbstractCar):
     IMG = GREEN_CAR
     START_POS = (150, 200)
@@ -110,4 +160,9 @@ class ComputerCar(AbstractCar):
         self.angle = 0
         self.current_point = 0
         self.target = 0
-        super().move() 
+        super().move()
+    def system_reset(self):
+        self.x, self.y = self.START_POS
+        self.angle = 0
+        self.current_point = 0
+        self.max_vel = 6

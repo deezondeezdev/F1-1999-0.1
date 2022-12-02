@@ -101,6 +101,8 @@ def game():
             game_info.reset()
             player_car.reset()
             computer_car.reset()
+            player_car.system_reset()
+            computer_car.system_reset()
         if keys[pygame.K_ESCAPE]:
             print("Cock")
         if not moved:

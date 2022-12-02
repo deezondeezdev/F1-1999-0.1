@@ -6,6 +6,7 @@ f = open("car.txt", "w")
 l = open("laps.txt", "w")
 window = Tk()
 window.geometry("1600x800+50+100")
+window.title("F1 1999 Menu")
 bg = PhotoImage(file = "bg.png")
 three_lap = PhotoImage(file = "imgs/3laps.png")
 five_lap = PhotoImage(file = "imgs/5laps.png")
@@ -45,7 +46,7 @@ def leftchanger():
 def rightchanger():
 
     if room == 1:
-        print("ruhb")
+        home()
     if room == 2:
         driverroom()
     if room == 3:
@@ -233,17 +234,18 @@ def driverroom5():
     buttonyuki.place(x= 400,y=200)
     buttonalbon.place(x= 850,y=200)
     buttonlatifi.place(x= 1200,y=200)
-
-
-
 pygame.mixer.music.load("theme.mp3")
 pygame.mixer.music.play(50)
-playbutton = PhotoImage(file= "imgs/playbutton.png")
-settings = PhotoImage(file= "imgs/Settings.png")
-label1 = Label(window, image = bg)
-label1.place(x = 0, y = 0)
-button1 = Button(window, image= playbutton,command=driverroom)
-button1.place(x=100,y=250)
-button2 = Button(window, image= settings)
-button2.place(x=100,y=550)
-window.mainloop()
+def home():
+    global button1,button2,label1
+
+    playbutton = PhotoImage(file= "imgs/playbutton.png")
+    settings = PhotoImage(file= "imgs/Settings.png")
+    label1 = Label(window, image = bg)
+    label1.place(x = 0, y = 0)
+    button1 = Button(window, image= playbutton,command=driverroom)
+    button1.place(x=100,y=250)
+    button2 = Button(window, image= settings)
+    button2.place(x=100,y=550)
+    window.mainloop()
+home()

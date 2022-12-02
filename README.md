@@ -9,10 +9,11 @@ Feature List:
     Lap System
     Proper 2nd Driver
     Tyre Wear
+    Selectable Car
+    Menu Area
 
 
 Future Feature:
-    Selectable Car
     Pause Function
-    Menu Area
-    
+    More Tracks
+    Modding Capabilities
